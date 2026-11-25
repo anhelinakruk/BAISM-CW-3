@@ -1,6 +1,8 @@
 package com.anhelina.baism_cw_3
 
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -29,6 +31,8 @@ interface RickAndMortyApi {
 object Api {
     val service: RickAndMortyApi = Retrofit.Builder()
         .baseUrl("https://rickandmortyapi.com/")
+        // długi timeout, żeby zdążyć edytować request zatrzymany w mitmproxy
+        .client(OkHttpClient.Builder().readTimeout(2, TimeUnit.MINUTES).build())
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(RickAndMortyApi::class.java)
